@@ -1,13 +1,18 @@
 apply plugin: 'com.android.library'
 apply from: '../prepare-robolectric.gradle'
 
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion safeExtGet("compileSdkVersion", 26)
+    
+    buildToolsVersion safeExtGet("buildToolsVersion", "27.0.3")
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion safeExtGet("minSdkVersion", 19)
+        targetSdkVersion safeExtGet("targetSdkVersion", 25)
         versionCode 1
         versionName "1.0"
     }
@@ -83,9 +88,9 @@ allprojects { p ->
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation "com.android.support:design:${safeExtGet('supportLibVersion', '26.1.0')}"
+    implementation "com.android.support:appcompat-v7:${safeExtGet('supportLibVersion', '26.1.0')}"
+    implementation "com.android.support:support-v4:${safeExtGet('supportLibVersion', '26.1.0')}"
 
     implementation 'com.github.wix-playground:ahbottomnavigation:2.4.8'
     implementation 'com.github.wix-playground:reflow-animator:1.0.4'
